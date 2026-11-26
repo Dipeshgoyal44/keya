@@ -19,4 +19,4 @@ After editing `build.py`, run `python3 build.py` and commit the regenerated HTML
 
 ## Correction package v5 status
 Applied: Platform copy and gradient icons, supplied portraits (mapping below), multicolour logo star, placeholder LinkedIn/social icons (only company LinkedIn is linked), unconfirmed markers on emails and the "100 years" band, Terms grammar fix.
-Portrait mapping used (please confirm): grey hair and glasses = Rajesh Chainani, dark hair = Ramesh Ramnath, third = Udaya Kondameedi.
+Portrait mapping confirmed by the owner: grey hair and glasses = Rajesh Chainani, dark hair = Ramesh Ramnath, third = Udaya Kondameedi.
