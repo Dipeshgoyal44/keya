@@ -12,3 +12,7 @@ Static, dependency-free rebuild of the HybridAI site (Home, Team, Platform, Care
 - Social profile URLs (`SOCIAL`) and team LinkedIn URLs (`LINKEDIN`) in `build.py`.
 - "100 years domain expertise" figure after the leadership changes.
 - Copy for the Optimize / Recommend / Orchestrate platform tabs, Privacy and Terms text, Blog posts.
+
+## Deploy
+Vercel: import the repo, framework preset "Other", leave build command empty (`vercel.json` sets it). Output is the repo root.
+After editing `build.py`, run `python3 build.py` and commit the regenerated HTML.
