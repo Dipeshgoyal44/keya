@@ -1,6 +1,40 @@
 #!/usr/bin/env python3
 """Generates the static pages. Run: python3 build.py"""
-LOGO='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2f5fa8"/><stop offset="1" stop-color="#3fb5c0"/></linearGradient></defs><path fill="url(#g)" d="M16 0c1.5 9 5.5 13 16 16-10.500 3-14.500 7-16 16-1.500-9-5.500-13-16-16C10.500 13 14.500 9 16 0z"/></svg>'
+# ---- Content that must be confirmed by HybridAI (see README) ----
+EMAIL_CONTACT="contact@hybrid.ai"
+EMAIL_CAREERS="careers@hybridai.com"   # Figma contact page uses hybrid.ai, careers page uses hybridai.com
+PHONE_DISPLAY="1 (833) 247 - 4968";PHONE_TEL="+18332474968"
+SOCIAL=[("Facebook","https://www.facebook.com/"),("GitHub","https://github.com/"),("Slack","https://slack.com/"),("LinkedIn","https://www.linkedin.com/"),("X","https://x.com/")]  # TODO: replace with HybridAI's real profile URLs
+CONTACT_HREF="contact.html#contact-form"
+_n=[0]
+def star(size=32):
+    _n[0]+=1;i=_n[0]
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 32 32" aria-hidden="true"><defs>'
+    f'<linearGradient id="a{i}" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3fb5c0"/><stop offset="1" stop-color="#2f5fa8"/></linearGradient>'
+    f'<linearGradient id="b{i}" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#1c3f78"/><stop offset="1" stop-color="#4aa3d8"/></linearGradient></defs>'
+    f'<path fill="url(#a{i})" d="M16 0c.9 8 3.4 12.600 0 16-3.400-3.400-.9-8 0-16z" transform="rotate(0 16 16)"/>'
+    f'<path fill="#2f5fa8" d="M16 0c1.200 8.500 5 12.500 16 16-11 3.500-14.800 7.500-16 16-1.200-8.500-5-12.500-16-16C11 12.500 14.800 8.500 16 0z" opacity=".0"/>'
+    f'<path fill="url(#b{i})" d="M32 16C23.500 17.200 19.500 21 16 32c-3.500-11-7.500-14.800-16-16 8.500-1.200 12.500-5 16-16 3.500 11 7.500 14.800 16 16z"/>'
+    f'<path fill="url(#a{i})" d="M16 0c1.200 8.500 5 12.500 16 16C23.500 17.200 19.500 21 16 32z" opacity=".55"/>'
+    f'<path fill="#fff" opacity=".9" d="M16 11.500c.5 2.800 1.700 4 4.500 4.500-2.800.5-4 1.700-4.500 4.500-.5-2.800-1.700-4-4.500-4.500 2.800-.5 4-1.700 4.500-4.500z"/></svg>')
+def wordmark():
+    lam='<svg class="lam" viewBox="0 0 14 15" aria-hidden="true"><path d="M1.500 14 7 1.500 12.500 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    return f'<span class="wm" aria-label="HybridAI">Hybrid{lam}I</span>'
+def logo():return f'<a class="logo" href="index.html">{star()}{wordmark()}</a>'
+SPARK='<svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c.8 7 3.400 9.600 12 12-8.600 2.400-11.200 5-12 12-.8-7-3.400-9.600-12-12C8.600 9.600 11.200 7 12 0z"/></svg>'
+SPARK_O='<svg class="sparko" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 2c.9 6.500 3.500 9.100 10 10-6.500.9-9.100 3.500-10 10-.9-6.500-3.500-9.100-10-10 6.500-.9 9.100-3.500 10-10z"/></svg>'
+ICO={
+"fb":'<path d="M13.500 21v-8h2.700l.4-3.200h-3.100V7.800c0-.9.3-1.500 1.600-1.500h1.700V3.400c-.3 0-1.300-.1-2.400-.1-2.400 0-4.100 1.500-4.100 4.200v2.300H7.500V13h2.800v8z"/>',
+"gh":'<path d="M12 .5C5.650.5.500 5.650.500 12c0 5.080 3.290 9.390 7.860 10.910.58.100.79-.25.79-.56v-2c-3.200.7-3.870-1.370-3.870-1.370-.52-1.330-1.280-1.690-1.280-1.690-1.050-.71.080-.7.080-.7 1.160.08 1.770 1.190 1.770 1.190 1.030 1.770 2.700 1.260 3.360.96.1-.75.4-1.260.73-1.550-2.550-.29-5.240-1.280-5.240-5.690 0-1.260.45-2.280 1.190-3.090-.12-.29-.52-1.460.11-3.050 0 0 .97-.31 3.170 1.180a11 11 0 0 1 5.760 0c2.200-1.490 3.170-1.180 3.170-1.180.63 1.590.23 2.760.11 3.050.74.81 1.190 1.830 1.190 3.090 0 4.420-2.690 5.390-5.250 5.680.41.36.78 1.060.78 2.140v3.170c0 .31.21.67.8.56A11.500 11.500 0 0 0 23.500 12C23.500 5.650 18.350.5 12 .5z"/>',
+"sl":'<g fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round"><path d="M9.500 3.500v17M14.500 3.500v17M3.500 9.500h17M3.500 14.500h17"/></g>',
+"in":'<path d="M20.450 20.450h-3.560v-5.570c0-1.330-.03-3.040-1.850-3.040-1.860 0-2.140 1.450-2.140 2.940v5.670H9.350V9h3.410v1.560h.05c.48-.9 1.640-1.850 3.370-1.850 3.600 0 4.270 2.370 4.270 5.460v6.280zM5.340 7.430a2.060 2.060 0 1 1 0-4.120 2.060 2.060 0 0 1 0 4.120zM7.120 20.450H3.560V9h3.560v11.450z"/>',
+"x":'<path d="M18.244 2.250h3.308l-7.227 8.260 8.502 11.240H16.170l-5.214-6.817L4.990 21.750H1.680l7.730-8.835L1.254 2.250H8.080l4.713 6.231zm-1.161 17.520h1.833L7.084 4.126H5.117z"/>'}
+def ico(k,cls="ico"):return f'<svg class="{cls}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{ICO[k]}</svg>'
+SOC_KEYS=["fb","gh","sl","in","x"]
+def socials():
+    return '<div class="soc">'+"".join(f'<a href="{u}" target="_blank" rel="noopener noreferrer" aria-label="HybridAI on {n}">{ico(k)}</a>' for (n,u),k in zip(SOCIAL,SOC_KEYS))+'</div>'
+PH='<svg class="li" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>'
+ML='<svg class="li" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>'
 NAV=[("index.html","Home"),("team.html","Meet Our Team"),("platform.html","Platform Overview"),("careers.html","Careers")]
 def page(file,title,desc,body):
     nav="".join(f'<li><a href="{h}"{" aria-current=page" if h==file else ""}>{t}</a></li>' for h,t in NAV)
@@ -8,14 +42,14 @@ def page(file,title,desc,body):
 <title>{title} · HybridAI</title><meta name="description" content="{desc}">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css"></head><body><a class="skip" href="#main">Skip to content</a>
-<header><div class="wrap nav"><a class="logo" href="index.html">{LOGO}HybridAI</a>
-<button class="menu" aria-label="Menu" aria-expanded="false">☰</button><nav aria-label="Main"><ul>{nav}</ul></nav><a class="btn" href="contact.html">Contact Us</a></div></header>
+<header><div class="wrap nav">{logo()}
+<button class="menu" aria-label="Menu" aria-expanded="false">☰</button><nav aria-label="Main"><ul>{nav}<li class="mob"><a class="btn fill" href="{CONTACT_HREF}">Contact Us</a></li></ul></nav><a class="btn out" href="{CONTACT_HREF}">Contact Us</a></div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap"><div class="fgrid"><div><a class="logo" href="index.html">{LOGO}HybridAI</a><p>HybridAI is a cutting-edge SaaS and on-premise platform designed to revolutionize how companies manage and optimize their IT and AI infrastructure resources through the datacenter lifecycle.</p>
-<div class="soc"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="GitHub">gh</a><a href="#" aria-label="Slack">#</a><a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="X">X</a></div></div>
-<div><h4>SUPPORT</h4><ul><li><a href="contact.html">Contact Us</a></li></ul></div>
-<div><h4>RESOURCES</h4><ul><li><a href="careers.html">Careers</a></li><li><a href="#">Blog</a></li></ul></div>
-<div><h4>COMPANY</h4><ul><li><a href="team.html">Our Team</a></li><li><a href="platform.html">Our Platform</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms &amp; Conditions</a></li></ul></div></div>
+<footer><div class="wrap"><div class="fgrid"><div>{logo()}<p>HybridAI is a cutting-edge SaaS and on-premise platform designed to revolutionize how companies manage and optimize their IT and AI infrastructure resources through the datacenter lifecycle.</p>
+{socials()}</div>
+<div><h4>SUPPORT</h4><ul><li><a href="{CONTACT_HREF}">Contact Us</a></li></ul></div>
+<div><h4>RESOURCES</h4><ul><li><a href="careers.html">Careers</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+<div><h4>COMPANY</h4><ul><li><a href="team.html">Our Team</a></li><li><a href="platform.html">Our Platform</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div></div>
 <p class="copy">Copyright © 2025 Hybrid AI</p></div></footer><script src="assets/app.js"></script></body></html>'''
 def ic(p):return f'<svg viewBox="0 0 48 48">{p}</svg>'
 I={"plan":ic('<rect x="10" y="6" width="26" height="36" rx="3"/><rect x="16" y="14" width="14" height="10" rx="2"/><path d="M20 28h6M23 10v4"/>'),
@@ -29,9 +63,9 @@ I={"plan":ic('<rect x="10" y="6" width="26" height="36" rx="3"/><rect x="16" y="
 "flex":ic('<path d="M24 42V24M24 24 10 14M24 24l14-10M6 18l4-6 6 3M42 18l-4-6-6 3M20 10l4-6 4 6"/>'),
 "bulb":ic('<path d="M16 34V30C10 26 8 22 8 17a16 16 0 1 1 32 0c0 5-2 9-8 13v4zM16 40h16M20 44h8M26 12l-6 10h8l-6 10"/>')}
 def feat(k,t,d,full=False):return f'<div class="feat reveal{" full" if full else ""}">{I[k]}<h3>{t}</h3><p>{d}</p></div>'
-home=f'''<section class="hero wrap"><h1 class="reveal">Empower your AI strategy — accelerate enterprise agility with <em>Agentic AI</em> workflow automation and enhance performance tuning across clouds with <em>Predictive AI</em>.</h1>
+home=f'''<section class="hero wrap"><span class="sp s1">{SPARK}</span><span class="sp s2">{SPARK}</span><span class="sp s3">{SPARK}</span><span class="sp s4">{SPARK}</span><h1 class="reveal">Empower your AI strategy — accelerate enterprise agility with Agentic AI workflow automation and enhance performance tuning across clouds with Predictive AI.</h1>
 <p class="reveal">Juggling on-premises and cloud resources? Scattered infrastructure and mismatched services slowing you down? HybridAI uses advanced AI to analyze and integrate your entire infrastructure, optimizing performance, eliminating waste, and slashing resource needs. Get a streamlined, efficient system that works smarter, not harder.</p>
-<div class="cta reveal"><a class="btn fill" href="contact.html">✦ Book a Demo</a><a class="btn" href="contact.html">Enquire Now</a></div></section>
+<div class="cta reveal"><a class="btn fill" href="{CONTACT_HREF}">{SPARK_O}Book a Demo</a><a class="btn out" href="{CONTACT_HREF}">Enquire Now</a></div></section>
 <section class="s wrap"><p class="eyebrow">About Us</p><h2>Who We Are</h2><p class="lead reveal">HybridAI empowers enterprises to accelerate AI innovation and deployment while reducing operational costs by transforming how AI and IT infrastructure resources are planned, automated, and optimized. By intelligently aligning resource allocation with workload demands and utilization, it delivers measurable improvements in performance, energy efficiency, and total cost of ownership (TCO).</p><a class="btn fill" href="team.html">Meet Our Team</a></section>
 <section class="s wrap"><p class="eyebrow">Our Process</p><h2>How We Work</h2><p class="lead reveal">HybridAI’s patented innovation, Automating the Resource Lifecycle – Plan, Orchestrate, Predict, and Optimize, is driven by the xPU Resource Engine, which intelligently models and provisions AI infrastructure resources based on workload characteristics, including compute intensity, latency sensitivity, and power constraints. Utilizing agentic AI, it orchestrates end-to-end AI data center workflows—from AI model frameworks to heterogeneous infrastructure components such as GPUs, CPUs, memory, and storage. The engine continuously optimizes resource allocation through real-time telemetry, predictive analytics, and utilization data to maximize performance density, power efficiency, and system throughput.</p></section>
 <section class="s wrap"><p class="eyebrow">Our Solution</p><h2>What Our Customers Can Expect</h2><div class="grid">
@@ -46,34 +80,50 @@ home=f'''<section class="hero wrap"><h1 class="reveal">Empower your AI strategy 
 {feat("chart","AI-Powered Optimization","Leveraging the latest advancements in AI and machine learning, HybridAI continuously analyses and optimizes infrastructure performance, ensuring peak efficiency and cost savings. Alerting you to ensure you maximise your investments.",True)}
 {feat("ease","Ease of Use","Designed with user-friendliness in mind, HybridAI simplifies complex infrastructure optimization. Its intuitive interface makes it easy for your team to adopt and realize its benefits quickly.")}
 {feat("flex","Flexible Deployment Options","Deploy HybridAI on-premises or in the cloud, tailoring the solution to your specific requirements and preferences.")}</div></section>'''
-PL=[("predict","Predict","Predict with Confidence",["Illuminate future workloads and anticipate infrastructure demands.","Smart foresight unlocked — HybridAI maps, predicts, and optimizes your infrastructure."]),
-("optimize","Optimize","Optimize Continuously",["Dynamic resource allocation adapts to evolving workloads.","Cut waste, energy use, and total cost of ownership."]),
-("plan","Plan &amp; Design","Plan &amp; Design Smarter",["Recommends the right AI infrastructure for each model and workload.","Accounts for compute intensity, latency sensitivity, and power limits."]),
-("orch","Orchestrate","Orchestrate End to End",["Automate deployment across K8s, OpenShift, VMware, on-premise and cloud.","From months to minutes, with validation built in."])]
-tabs="".join(f'<button class="tab" role="tab" data-k="{k}" aria-selected="{str(i==0).lower()}">{n}</button>' for i,(k,n,_,_) in enumerate(PL))
-panels="".join(f'<div class="panel{" on" if i==0 else ""}" data-g="pl" data-k="{k}" role="tabpanel"><div><h2 style="font-size:26px">{h}</h2><ul>{"".join(f"<li>{x}</li>" for x in b)}</ul></div>{I["bulb"]}</div>' for i,(k,_,h,b) in enumerate(PL))
+ic2=lambda p:f'<svg viewBox="0 0 48 48">{p}</svg>'
+I["xpu"]=ic2('<rect x="12" y="12" width="24" height="24" rx="3"/><rect x="18" y="18" width="12" height="12" rx="1.500"/><path d="M18 6v6M24 6v6M30 6v6M18 36v6M24 36v6M30 36v6M6 18h6M6 24h6M6 30h6M36 18h6M36 24h6M36 30h6"/>')
+I["server"]=ic2('<rect x="8" y="6" width="32" height="10" rx="2"/><rect x="8" y="19" width="32" height="10" rx="2"/><rect x="8" y="32" width="32" height="10" rx="2"/><path d="M14 11h2M14 24h2M14 37h2M32 11h4M32 24h4M32 37h4"/>')
+I["gpu"]=ic2('<rect x="4" y="10" width="40" height="24" rx="3"/><circle cx="16" cy="22" r="7"/><circle cx="16" cy="22" r="2"/><circle cx="33" cy="22" r="5"/><path d="M10 34v5M16 34v5M22 34v5M28 34v5M34 34v5M30 18l6 8M36 18l-6 8"/>')
+PL=[("predict","Predict","Predict with Confidence",["Illuminate future workloads and anticipate infrastructure demands.","Smart foresight unlocked — HybridAI maps, predicts, and optimizes your infrastructure."],"bulb"),
+("optimize","Optimize","Optimize with Precision",["Dynamic resource allocation adapts to evolving workloads.","Cut waste, energy use, and total cost of ownership."],"xpu"),
+("plan","Plan &amp; Design","Recommend with Intelligence",["Recommends the right AI infrastructure for each model and workload.","Accounts for compute intensity, latency sensitivity, and power limits."],"server"),
+("orch","Orchestrate","Orchestrate with Speed",["Automate deployment across K8s, OpenShift, VMware, on-premise and cloud.","From months to minutes, with validation built in."],"gpu")]
+tabs="".join(f'<button class="tab" role="tab" data-k="{k}" aria-selected="{str(i==0).lower()}">{n}</button>' for i,(k,n,_,_,_) in enumerate(PL))
+panels="".join(f'<div class="panel{" on" if i==0 else ""}" data-g="pl" data-k="{k}" role="tabpanel"><div><h2 style="font-size:26px">{h}</h2><ul>{"".join(f"<li>{x}</li>" for x in b)}</ul></div>{I[ic]}</div>' for i,(k,_,h,b,ic) in enumerate(PL))
 platform=f'<section class="band"><div class="wrap"><h1>Platform Overview</h1><p>The HybridAI platform is purpose built for enterprise customers, underpinned by the four key capabilities of Prediction, Optimization, Recommendation, and Orchestration.</p></div></section><div class="wrap" style="max-width:760px;padding-bottom:40px"><div class="tabs" role="tablist" data-group="pl">{tabs}</div>{panels}</div>'
-TEAM1=[("Rajesh Chainani","CPO and Co-Founder","#3a4a63"),("Ramesh Ramnath","CDO, Co-Founder","#7a2f2f")]
-TEAM2=[("Jason McLaurin","CRO","#1c1c1f"),("Trevor Carlson","CTO","#5d6168"),("Udaya Kondameedi","EVP Product Engineering","#2a1a24")]
-def card(n,r,c):return f'<div class="card reveal" style="background:{c}">{"".join(w[0] for w in n.split()[:2])}<div><span>{n}<small>{r}</small></span><span aria-hidden="true">in</span></div></div>'
-team=f'''<section class="band"><div class="wrap"><h1>The <span class="grad">HybridAI</span> Team</h1><p>At the helm of our company is a dynamic leadership team committed to fostering growth, innovation, and excellence. With deep industry expertise and a shared passion for driving meaningful change, our leaders are committed to guiding our organization with vision, integrity, and strategic insight. Learn more about the individuals who inspire our direction and lead us toward a successful future.</p></div></section>
-<div class="wrap"><div class="team">{"".join(card(*t) for t in TEAM1)}</div></div><div class="stat"><b>100</b> years domain expertise</div>
-<div class="wrap"><div class="team">{"".join(card(*t) for t in TEAM2)}</div><section class="s"><h2 style="font-weight:500">Wish To Join Our Team?</h2><a class="btn fill" href="careers.html">View Vacancies</a></section></div>'''
+TEAM=[("Rajesh Chainani","CPO and Co-Founder","rajesh"),("Ramesh Ramnath","CDO, Co-Founder","ramesh"),("Udaya Kondameedi","","udaya")]
+LINKEDIN={}  # TODO: {"Rajesh Chainani": "https://www.linkedin.com/in/..."}; icon is not linked until a URL is supplied
+def li(n):
+    u=LINKEDIN.get(n)
+    return f'<a href="{u}" aria-label="{n} on LinkedIn" target="_blank" rel="noopener noreferrer">{ico("in","li-ico")}</a>' if u else f'<span aria-hidden="true">{ico("in","li-ico")}</span>'
+def card(n,r,img):
+    role=f"<small>{r}</small>" if r else ""
+    return f'<div class="card reveal"><img src="assets/{img}.jpg" alt="Portrait of {n}" width="216" height="239" loading="lazy"><div><span>{n}{role}</span>{li(n)}</div></div>'
+team=f'''<section class="band"><div class="wrap"><h1 class="teamh">The <span class="grad">HybridAI</span> Team</h1><p>At the helm of our company is a dynamic leadership team committed to fostering growth, innovation, and excellence. With deep industry expertise and a shared passion for driving meaningful change, our leaders are dedicated to guiding our organization with vision, integrity, and strategic insight. Learn more about the individuals who inspire our direction and lead us toward a successful future.</p></div></section>
+<div class="wrap"><div class="team">{"".join(card(*t) for t in TEAM)}</div></div><div class="stat"><b>100</b> years domain expertise</div>
+<div class="wrap"><section class="s"><h2 style="font-weight:500">Wish To Join Our Team?</h2><a class="btn fill" href="careers.html">View Vacancies</a></section></div>'''
 JOBS=[("Engineering","Senior Frontend Developer"),("Engineering","Senior Backend Developer"),("Engineering","ML Platform Engineer"),("Design","Product Designer"),("Marketing","Growth Marketing Manager"),("Finance","Financial Analyst")]
 jt="".join(f'<button class="tab" role="tab" data-k="{c}" aria-selected="{str(c=="Engineering").lower()}">{c}</button>' for c in ["Engineering","Design","Marketing","Finance"])
-jobs="".join(f'<article class="job" data-g="jb" data-k="{c}"{"" if c=="Engineering" else " hidden"}><header><div><h3>{t}</h3><small>{c} · Remote · Full-time</small></div><a class="btn fill sm" href="mailto:careers@hybridai.com?subject={t}">Apply Now</a></header><p style="margin:.6em 0 0">We\'re looking for an experienced {t.lower()} to join our team and help build the future of AI infrastructure.</p></article>' for c,t in JOBS)
+jobs="".join(f'<article class="job" data-g="jb" data-k="{c}"{"" if c=="Engineering" else " hidden"}><header><div><h3>{t}</h3><small>{c} · Remote · Full-time</small></div><a class="btn fill sm" href="contact.html?dept=Careers&amp;subject={t.replace(" ","+")}+application#contact-form">Apply Now</a></header><p style="margin:.6em 0 0">We\'re looking for an experienced {t.lower()} to join our team and help build the future of AI infrastructure.</p></article>' for c,t in JOBS)
 for _ in [0]:jobs=jobs.replace('class="job" data-g="jb"','class="job on" data-g="jb"')
 careers=f'''<section style="background:linear-gradient(rgba(10,20,40,.7),rgba(10,20,40,.8)),linear-gradient(135deg,#2f5fa8,#0b1220);color:#fff;text-align:center;padding:96px 20px"><h1 style="font-size:clamp(32px,5vw,48px)">JOIN OUR TEAM</h1><p style="max-width:640px;margin:auto">We are looking for talented individuals who are excited to shape the future of IT and AI infrastructure optimization.</p></section>
 <div class="wrap"><div class="about"><p>At HybridAI, we are revolutionizing the way companies manage and optimize their IT and AI infrastructure. Our innovative SaaS and on-premise platform harnesses cutting-edge AI to drive efficiency, cost savings, and performance improvements. If you're passionate about technology, optimization, and making an impact in the AI-driven world, we want you on our team.</p>
 <div class="perks"><div class="perk p1"><h3>Innovative Environment</h3><p>Work at the forefront of AI-driven IT infrastructure optimization.</p></div><div class="perk p2"><h3>Growth &amp; Development</h3><p>Expand your skills and expertise with access to cutting-edge tools and a collaborative team.</p></div><div class="perk p3"><h3>Trust and Transparency</h3><p>The best ideas emerge when teams collaborate with honesty, integrity, and the confidence to challenge the status quo.</p></div><div class="perk p4"><h3>Global Perspectives. Unified Vision.</h3><p>Our global team unites diverse voices, creating an inclusive environment where innovation thrives.</p></div></div></div>
 <section class="s" style="padding-top:24px"><h2>Current Openings</h2><div class="tabs" role="tablist" data-group="jb" style="justify-content:flex-start">{jt}</div><div style="border-top:1px solid var(--line)">{jobs}</div></section>
-<section class="s"><h2>How To Apply</h2><p class="lead">If you are excited to be part of our team, send your resume and a cover letter to <a href="mailto:careers@hybridai.com" style="color:var(--blue)">careers@hybridai.com</a>. Tell us about your experience, passion for AI and IT infrastructure, and how you can contribute to HybridAI.</p></section></div>'''
-contact='''<div class="wrap contact"><div><h1>Get In Touch With Us</h1><p>At HybridAI, we optimize your IT infrastructure with AI-driven precision, ensuring smarter IT, lower costs, and greener operations. Whether you're an enterprise, cloud provider, server vendor, or consulting firm, our automated platform helps you reduce waste, enhance efficiency, and optimize resources across any infrastructure.<br>Have questions about AI costs, underutilized resources, or vendor lock-in?<br>Let's talk about right-sizing your workloads for peak performance.</p>
-<ul style="padding:0;font-weight:500"><li>📞 <a href="tel:+18332474968">1 (833) 247 - 4968</a></li><li>✉️ <a href="mailto:contact@hybrid.ai">contact@hybrid.ai</a></li></ul></div>
-<form><div><label for="f">First Name <i>*</i></label><input id="f" required autocomplete="given-name"></div><div><label for="l">Last Name <i>*</i></label><input id="l" required autocomplete="family-name"></div>
+<section class="s"><h2>How To Apply</h2><p class="lead">If you are excited to be part of our team, send your resume and a cover letter to <a href="mailto:{EMAIL_CAREERS}" style="color:var(--blue)">{EMAIL_CAREERS}</a>. Tell us about your experience, passion for AI and IT infrastructure, and how you can contribute to HybridAI.</p></section></div>'''
+contact=f'''<div class="wrap contact"><div><h1>Get In Touch With Us</h1><p>At HybridAI, we optimize your IT infrastructure with AI-driven precision, ensuring smarter IT, lower costs, and greener operations. Whether you're an enterprise, cloud provider, server vendor, or consulting firm, our automated platform helps you reduce waste, enhance efficiency, and optimize resources across any infrastructure.<br>Have questions about AI costs, underutilized resources, or vendor lock-in?<br>Let's talk about right-sizing your workloads for peak performance.</p>
+<ul class="cl"><li>{PH}<a href="tel:{PHONE_TEL}">{PHONE_DISPLAY}</a></li><li>{ML}<a href="mailto:{EMAIL_CONTACT}">{EMAIL_CONTACT}</a></li></ul></div>
+<form id="contact-form" data-contact="{EMAIL_CONTACT}" data-careers="{EMAIL_CAREERS}" novalidate><div><label for="f">First Name <i>*</i></label><input id="f" required autocomplete="given-name"></div><div><label for="l">Last Name <i>*</i></label><input id="l" required autocomplete="family-name"></div>
 <div class="w"><label for="e">Email <i>*</i></label><input id="e" type="email" required placeholder="you@domain.com" autocomplete="email"></div>
 <div class="w"><label for="d">Department <i>*</i></label><select id="d" required><option value="">- Select -</option><option>Sales</option><option>Support</option><option>Partnerships</option><option>Careers</option></select></div>
 <div class="w"><label for="s">Subject <i>*</i></label><input id="s" required></div><div class="w"><label for="m">Message <i>*</i></label><textarea id="m" rows="4" required placeholder="Write your message"></textarea></div>
-<div class="w"><button class="btn fill" type="submit">SUBMIT</button></div><div class="w ok" role="status">Thanks! We'll be in touch shortly.</div></form></div>'''
-for f,t,d,b in [("index.html","Home","AI-driven IT infrastructure optimization.",home),("team.html","Meet Our Team","The HybridAI leadership team.",team),("platform.html","Platform Overview","Predict, optimize, plan and orchestrate.",platform),("careers.html","Careers","Join the HybridAI team.",careers),("contact.html","Contact Us","Get in touch with HybridAI.",contact)]:
+<div class="w"><button class="btn fill" type="submit">SUBMIT</button></div><div class="w ok" role="status"></div></form></div>'''
+blog=f'''<section class="band"><div class="wrap"><h1>Blog</h1><p>Notes from the HybridAI team on AI infrastructure, resource optimization, and what we learn building a platform that plans, orchestrates, predicts, and optimizes it.</p></div></section>
+<div class="wrap"><section class="s"><h2>Topics We Write About</h2><div class="grid" style="max-width:900px;grid-template-columns:repeat(3,1fr)">
+{feat("pred","Predictive AI","How workload telemetry becomes forecasts of capacity, power, and cost.")}
+{feat("auto","Agentic Automation","Orchestrating AI and IT workloads across Kubernetes, OpenShift, VMware, and cloud.")}
+{feat("cost","Infrastructure Efficiency","Right-sizing GPUs, CPUs, memory, and storage to cut waste and total cost of ownership.")}</div>
+<p class="lead" style="margin-top:40px">Our first posts are on the way. Want to hear when they land, or have a topic you would like covered?</p><a class="btn fill" href="{CONTACT_HREF}">Contact Us</a></section></div>'''
+def legal(t,w):return f'<section class="band"><div class="wrap"><h1>{t}</h1><p>The full {w} is being finalised and will be published here. For questions in the meantime, contact <a href="mailto:{EMAIL_CONTACT}" style="color:var(--blue)">{EMAIL_CONTACT}</a>.</p></div></section>'
+for f,t,d,b in [("blog.html","Blog","Notes from the HybridAI team.",blog),("privacy.html","Privacy Policy","HybridAI privacy policy.",legal("Privacy Policy","privacy policy")),("terms.html","Terms &amp; Conditions","HybridAI terms and conditions.",legal("Terms &amp; Conditions","terms and conditions")),("index.html","Home","AI-driven IT infrastructure optimization.",home),("team.html","Meet Our Team","The HybridAI leadership team.",team),("platform.html","Platform Overview","Predict, optimize, plan and orchestrate.",platform),("careers.html","Careers","Join the HybridAI team.",careers),("contact.html","Contact Us","Get in touch with HybridAI.",contact)]:
     open(f,"w").write(page(f,t,d,b))
