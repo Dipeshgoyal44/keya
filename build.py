@@ -108,7 +108,7 @@ def li(n):
     return f'<span class="ph" title="LinkedIn URL to be supplied" aria-label="{n} LinkedIn (URL to be supplied)">{ico("in","li-ico")}</span>'
 def card(n,r,img):
     role=f"<small>{r}</small>" if r else ""
-    return f'<div class="card reveal"><img src="assets/{img}.jpg" alt="Portrait of {n}" width="432" height="576" loading="lazy"><div><span>{n}{role}</span>{li(n)}</div></div>'
+    return f'<div class="card reveal"><img src="assets/{img}.jpg" alt="Portrait of {n}" width="432" height="648" loading="lazy"><div><span>{n}{role}</span>{li(n)}</div></div>'
 team=f'''<section class="band"><div class="wrap"><h1 class="teamh">The <span class="grad">HybridAI</span> Team</h1><p>At the helm of our company is a dynamic leadership team committed to fostering growth, innovation, and excellence. With deep industry expertise and a shared passion for driving meaningful change, our leaders are dedicated to guiding our organization with vision, integrity, and strategic insight. Learn more about the individuals who inspire our direction and lead us toward a successful future.</p></div></section>
 <div class="wrap"><div class="team">{"".join(card(*t) for t in TEAM)}</div></div><div class="stat"><b>100</b> years domain expertise<small class="tbc-note" style="display:block">Pending confirmation from HybridAI</small></div>
 <p class="tbc-note" style="text-align:center;margin-top:16px">Team LinkedIn links: URL to be supplied.</p>
