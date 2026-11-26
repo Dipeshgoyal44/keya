@@ -16,3 +16,7 @@ Static, dependency-free rebuild of the HybridAI site (Home, Team, Platform, Care
 ## Deploy
 Vercel: import the repo, framework preset "Other", leave build command empty (`vercel.json` sets it). Output is the repo root.
 After editing `build.py`, run `python3 build.py` and commit the regenerated HTML.
+
+## Correction package v5 status
+Applied: Platform copy and gradient icons, supplied portraits (mapping below), multicolour logo star, placeholder LinkedIn/social icons (only company LinkedIn is linked), unconfirmed markers on emails and the "100 years" band, Terms grammar fix.
+Portrait mapping used (please confirm): grey hair and glasses = Rajesh Chainani, dark hair = Ramesh Ramnath, third = Udaya Kondameedi.
